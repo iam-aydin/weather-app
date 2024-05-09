@@ -4,13 +4,13 @@ document.getElementById('searchBtn').addEventListener('click', function() {
     if (!city) return;
 
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`)
-  .then(response => {
+ .then(response => {
         if (!response.ok) { // Check if the response was successful
             throw new Error('City not found');
         }
         return response.json();
     })
-  .then(data => {
+ .then(data => {
             const weatherInfo = document.getElementById('weatherInfo');
             const cityName = document.getElementById('cityName');
             const weatherCondition = data.weather[0].main; // Extract the main weather condition
@@ -45,8 +45,16 @@ document.getElementById('searchBtn').addEventListener('click', function() {
             `;
             weatherInfo.classList.add('slideIn');
         })
-  .catch(error => {
+ .catch(error => {
         const weatherInfo = document.getElementById('weatherInfo');
         weatherInfo.innerHTML = `<p>${error.message}</p>`; // Display the error message
     });
+});
+
+// Add event listener for the Enter key press in the cityInput field
+document.getElementById('cityInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent the default form submission behavior
+        document.getElementById('searchBtn').click(); // Trigger the searchBtn click event
+    }
 });
